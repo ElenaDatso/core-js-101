@@ -20,7 +20,7 @@
  *    ['Array', 'Number', 'string'], 'Date'    => -1
  *    [0, 1, 2, 3, 4, 5], 5    => 5
  */
-function findElement( arr, value ) {
+function findElement(arr, value) {
   return arr.indexOf(value);
 }
 
@@ -35,14 +35,15 @@ function findElement( arr, value ) {
  *    2 => [ 1, 3 ]
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
-function generateOdds( len ) {
-  const ar = [];
-  let num = 1;
-  while (ar.length < len) {
-    ar.push(num);
-    num += 2;
-  }
-  return ar;
+function generateOdds(/* len */) {
+  // const ar = [];
+  // let num = 1;
+  // while (ar.length < len) {
+  //   ar.push(num);
+  //   num += 2;
+  // }
+  // return ar;
+  throw new Error('Not implemented');
 }
 
 
@@ -58,7 +59,7 @@ function generateOdds( len ) {
  *    [0, 1, 2, 3, 4, 5] => [0, 1, 2, 3, 4, 5,   0, 1, 2, 3, 4, 5]
  *    [] => []
  */
-function doubleArray( arr ) {
+function doubleArray(arr) {
   return arr.concat([...arr]);
 }
 
@@ -74,7 +75,7 @@ function doubleArray( arr ) {
  *    [-1, 2, -5, -4, 0] => [ 2 ]
  *    [] => []
  */
-function getArrayOfPositives( arr ) {
+function getArrayOfPositives(arr) {
   return arr.filter((num) => num > 0);
 }
 
