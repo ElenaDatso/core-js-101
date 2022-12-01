@@ -35,15 +35,16 @@ function findElement(arr, value) {
  *    2 => [ 1, 3 ]
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
-function generateOdds(/* len */) {
-  // const ar = [];
-  // let num = 1;
-  // while (ar.length < len) {
-  //   ar.push(num);
-  //   num += 2;
-  // }
-  // return ar;
-  throw new Error('Not implemented');
+function generateOdds(len) {
+  const ar = [];
+  ar.length = len;
+  ar.fill(0);
+  let num = -1;
+  const odds = ar.map((el) => {
+    num += 2;
+    return el + num;
+  });
+  return odds;
 }
 
 
