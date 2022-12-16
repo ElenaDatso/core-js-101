@@ -542,6 +542,16 @@ function distinct(arr) {
  *   }
  */
 function group(/* array, keySelector, valueSelector */) {
+  // const keys = array
+  //   .map(keySelector)
+  //   .filter((v, i, a) => a.indexOf(v) === i);
+  // return keys.reduce((s, v) => {
+  //   const result = s;
+  //   result[v] = array
+  //     .filter((vv) => keySelector(vv) === v)
+  //     .map((vv) => valueSelector(vv));
+  //   return result;
+  // }, {});
   throw new Error('Not implemented');
 }
 
@@ -576,8 +586,14 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  const i = indexes;
+  let result = arr;
+  i.map((ind) => {
+    result = result[ind];
+    return ind;
+  });
+  return result;
 }
 
 
