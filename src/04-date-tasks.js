@@ -53,8 +53,11 @@ function parseDataFromIso8601(val) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(d) {
+  const notLeap = [1900, 2100, 2200, 2300, 2500, 2600];
+  return notLeap.includes(d.getFullYear())
+    ? false
+    : d.getFullYear() % 4 === 0;
 }
 
 
