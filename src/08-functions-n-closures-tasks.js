@@ -79,8 +79,16 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(fn) {
+  const cach = Object.create(null);
+  return (...args) => {
+    const key = 'key1';
+    const val = cach[key];
+    if (val) return val;
+    const res = fn(...args);
+    cach[key] = res;
+    return res;
+  };
 }
 
 
