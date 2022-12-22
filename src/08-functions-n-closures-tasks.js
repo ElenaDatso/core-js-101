@@ -60,10 +60,12 @@ function getPowerFunction(exp) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...args) {
+  return (arg) => {
+    if (args.length === 0) return null;
+    return args.reduce((sum, coef, idx) => sum + coef * arg ** (args.length - idx - 1), 0);
+  };
 }
-
 
 /**
  * Memoizes passed function and returns function
@@ -107,10 +109,20 @@ function memoize(fn) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(fn, attempts) {
+  let count = 0;
+  return function f() {
+    try {
+      count += 1;
+      fn();
+    } catch (e) {
+      if (count < attempts) {
+        f();
+      }
+    }
+    return 'expected';
+  };
 }
-
 
 /**
  * Returns the logging wrapper for the specified method,
