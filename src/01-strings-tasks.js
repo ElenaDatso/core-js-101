@@ -226,8 +226,8 @@ function getRectangleString(w, h) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str.replace(/[a-z]/gi, (val) => String.fromCharCode(val.charCodeAt() + (val.toLowerCase() < 'n' ? 13 : -13)));
 }
 
 /**
