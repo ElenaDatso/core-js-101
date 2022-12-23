@@ -91,8 +91,17 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  if (a === b && b === c) return true;
+  return (
+    Math.max(a, b, c)
+      < Math.min(a, b, c)
+      + Number(
+        [a, b, c].filter(
+          (num) => num < Math.max(a, b, c) && num > Math.min(a, b, c),
+        ),
+      )
+  );
 }
 
 
@@ -128,8 +137,12 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(r1, r2) {
+  const heighter = r1.top < r2.top ? r1 : r2;
+  const lower = r1.top < r2.top ? r2 : r1;
+  const closer = r1.left < r2.left ? r1 : r2;
+  const farther = r1.left < r2.left ? r2 : r1;
+  return heighter.top + heighter.width > lower.top && closer.left + closer.height > farther.left;
 }
 
 
@@ -159,8 +172,14 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(c, p) {
+  if (
+    (p.x - c.center.x) * (p.x - c.center.x)
+      + (p.y - c.center.y) * (p.y - c.center.y) < c.radius * c.radius
+  ) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -175,8 +194,15 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const ar = str
+    .split('')
+    .map((el) => {
+      if (str.indexOf(el, str.indexOf(el) + 1) === -1) return el;
+      return null;
+    })
+    .filter((el) => !!el);
+  return ar.length > 0 ? ar[0] : null;
 }
 
 
