@@ -248,8 +248,8 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').map((l, i) => str[str.length - 1 - i]).join('');
 }
 
 
@@ -265,8 +265,9 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(n) {
+  const str = n.toString();
+  return Number(str.split('').map((l, i) => str[str.length - 1 - i]).join(''));
 }
 
 
@@ -290,8 +291,45 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(no) {
+  const str = no.toString();
+  const control = str.slice(-1);
+  const payload = str
+    .slice(0, -1)
+    .split('')
+    .map((cur, i) => {
+      const indIsEven = i % 2 === 0;
+      if (str.slice(0, -1).length % 2 === 0) {
+        if (i === 0 || indIsEven) {
+          return Number(cur);
+        }
+        const mult = cur * 2;
+        if (mult - 10 >= 0) {
+          return mult
+            .toString()
+            .split('')
+            .reduce((acc, curt) => acc + Number(curt), 0);
+        }
+        return mult;
+      }
+      if (str.slice(0, -1).length % 2 !== 0) {
+        if (i === 0 || indIsEven) {
+          const mult = cur * 2;
+          if (mult - 10 >= 0) {
+            return mult
+              .toString()
+              .split('')
+              .reduce((acc, current) => acc + Number(current), 0);
+          }
+          return mult;
+        }
+        return cur;
+      }
+      return null;
+    })
+    .reduce((acc, curr) => acc + Number(curr), 0);
+  const result = (10 - ((payload % 10) % 10)).toString();
+  return result[result.length - 1] === control;
 }
 
 /**
@@ -308,8 +346,18 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(no) {
+  const numbers = no
+    .toString()
+    .split('')
+    .reduce((acc, cur) => acc + Number(cur), 0);
+  const res = numbers.toString().length > 1
+    ? numbers
+      .toString()
+      .split('')
+      .reduce((acc, cur) => acc + Number(cur), 0)
+    : numbers;
+  return res;
 }
 
 
