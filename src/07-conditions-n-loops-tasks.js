@@ -518,8 +518,39 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(pos) {
+  const win = [
+    '00-11-22',
+    '00-01-02',
+    '00-10-20',
+    '10-11-12',
+    '20-21-22',
+    '01-11-21',
+    '20-21-22',
+    '02-11-20',
+    '02-12-22',
+  ];
+  const filteredX = [];
+  pos.map((ar, ind) => ar.map((el, iEl) => {
+    if (el === 'X') filteredX.push(`${ind}${iEl}`);
+    return el;
+  }));
+  const filtered0 = [];
+  pos.map((ar, ind) => ar.map((el, iEl) => {
+    if (el === '0') filtered0.push(`${ind}${iEl}`);
+    return el;
+  }));
+  const winnerX = win
+    .map((el) => el.split('-').every((elem) => filteredX.includes(elem)))
+    .includes(true)
+    ? 'X'
+    : undefined;
+  const winner0 = win
+    .map((el) => el.split('-').every((elem) => filtered0.includes(elem)))
+    .includes(true)
+    ? '0'
+    : undefined;
+  return winner0 || winnerX;
 }
 
 
