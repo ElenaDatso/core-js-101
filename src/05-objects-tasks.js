@@ -116,34 +116,183 @@ function fromJSON(proto, json) {
  *
  *  For more examples see unit tests.
  */
+class MyClass {
+  constructor(v) {
+    this.ar = [];
+    this.value = v;
+  }
+
+  element(arg) {
+    const doubleEr = new Error(
+      'Element, id and pseudo-element should not occur more then one time inside the selector',
+    );
+    const orderEr = new Error(
+      'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+    );
+    try {
+      this.ar.push(arg);
+      if (
+        this.ar.filter((el) => el[0].toUpperCase() !== el[0].toLowerCase())
+          .length > 1
+      ) {
+        throw doubleEr;
+      }
+      if (this.ar.length > 1) {
+        throw orderEr;
+      }
+      return this;
+    } catch (error) {
+      if (
+        this.ar.filter((el) => el[0].toUpperCase() !== el[0].toLowerCase())
+          .length > 1
+      ) {
+        throw error;
+      }
+      if (this.ar.length > 1) {
+        throw orderEr;
+      }
+    }
+    return this;
+  }
+
+  id(arg) {
+    const doubleEr = new Error(
+      'Element, id and pseudo-element should not occur more then one time inside the selector',
+    );
+    const orderEr = new Error(
+      'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+    );
+    try {
+      if (this.ar.find((el) => el[0] === '#')) {
+        throw doubleEr;
+      }
+      if (this.ar.find((el) => el[0] === '.')) {
+        throw orderEr;
+      }
+      if (this.ar.find((el) => el[0] === ':' && el[1] === ':')) {
+        throw orderEr;
+      }
+      this.ar.push(`#${arg}`);
+      return this;
+    } catch (error) {
+      if (this.ar.find((el) => el[0] === '#')) {
+        throw doubleEr;
+      }
+      if (this.ar.find((el) => el[0] === '.')) {
+        throw orderEr;
+      }
+      if (this.ar.find((el) => el[0] === ':' && el[1] === ':')) {
+        throw orderEr;
+      }
+    }
+    return this;
+  }
+
+  class(arg) {
+    const orderEr = new Error(
+      'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+    );
+    try {
+      if (this.ar.find((el) => `${el[0]}` === '[')) {
+        throw orderEr;
+      }
+      this.ar.push(`.${arg}`);
+      return this;
+    } catch (er) {
+      throw orderEr;
+    }
+  }
+
+  attr(arg) {
+    const orderEr = new Error(
+      'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+    );
+    try {
+      if (this.ar.find((el) => el[0] === ':')) {
+        throw orderEr;
+      }
+      this.ar.push(`[${arg}]`);
+      return this;
+    } catch (er) {
+      if (this.ar.find((el) => el[0] === ':')) {
+        throw orderEr;
+      }
+    }
+    return this;
+  }
+
+  pseudoClass(arg) {
+    const orderEr = new Error(
+      'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+    );
+    try {
+      if (this.ar.find((el) => el[0] === ':' && el[1] === ':')) {
+        throw orderEr;
+      }
+      this.ar.push(`:${arg}`);
+      return this;
+    } catch (er) {
+      throw orderEr;
+    }
+  }
+
+  pseudoElement(arg) {
+    try {
+      if (this.ar.find((el) => `${el[0]}${el[1]}` === '::')) {
+        throw new Error();
+      }
+      this.ar.push(`::${arg}`);
+      return this;
+    } catch (e) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector',
+      );
+    }
+  }
+
+  combine(v) {
+    let localAR = '';
+    Array.from(v).map((el) => {
+      if (typeof el === 'object') localAR += el.ar.join('');
+      if (typeof el === 'string') localAR += ` ${el} `;
+      return el;
+    });
+    this.ar.push(localAR);
+    return this;
+  }
+
+  stringify() {
+    return this.ar.join('');
+  }
+}
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  element(v) {
+    return new MyClass(v).element(v);
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(v) {
+    return new MyClass(v).id(v);
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(v) {
+    return new MyClass(v).class(v);
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(v) {
+    return new MyClass(v).attr(v);
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(v) {
+    return new MyClass(v).pseudoClass(v);
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(v) {
+    return new MyClass(v).pseudoElement(v);
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(...v) {
+    return new MyClass(v).combine(v);
   },
 };
 
